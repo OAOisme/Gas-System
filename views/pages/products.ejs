@@ -25,11 +25,11 @@
                 </div>
                 <% } %>
                     <div class="d-flex justify-content-around fs-4">
-                        <span>Opening Stock: <%- (branche.totalvolume - products[0].totalSales +
-                                products[0].totalweight) %>kg
+                        <span>Opening Stock: <%- (products[0].remainingstock + products[0].totalweight) %>kg
                         </span>
                         <span>
-                            Closing Stock: <%- (branche.totalvolume - products[products.length - 1].totalSales) %>kg
+                            Closing Stock: <%- products[products.length - 1].remainingstock %>
+                                kg
                         </span>
                     </div>
                     <%}else{%>

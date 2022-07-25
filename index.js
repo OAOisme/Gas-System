@@ -5,7 +5,7 @@ const express = require('express'),
     session = require('express-session'),
     engine = require('ejs-mate'),
     path = require('path'),
-    { product, branch, price } = require('./schema/schemas')
+    { product, branch, price, dayTotal } = require('./schema/schemas')
 
 
 require('dotenv').config()
@@ -28,21 +28,7 @@ app.use(session({
     //cookie: { secure: true }
 }))
 
-app.route('/delete/item/:id')
-    .get(async (req, res) => {
-        const id = req.params.id
-        const item = await product.findById(id)
-        console.log(item)
-        const branches = await branch.findOne({ name: item.branch })
-        console.log(branches)
-        branches.totalvolume += parseInt(item.totalweight)
-        branches.currentvolume += parseInt(item.totalweight)
-        await branches.save()
-        item.username = "DELETED"
-        await item.save()
-        res.redirect('/admin')
 
-    })
 
 app.get('/logout', (req, res) => {
     req.session = null
@@ -67,6 +53,19 @@ app.route('/login')
             req.session.branch = branch_name
             res.redirect('/')
         }
+    })
+
+app.route('/delete/:id')
+    .get(async (req, res) => {
+        const { id } = req.params
+        const prod = await product.findById(id)
+        await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: prod.weight } })
+        const thebranch = await branch.findOne({ name: prod.branch })
+        thebranch.currentvolume += parseInt(prod.totalweight)
+        thebranch.save()
+        await product.findByIdAndDelete(id)
+        res.redirect('/admin')
+
     })
 
 app.route('/admin')
@@ -144,6 +143,7 @@ app.route('/receipt')
     .get(addons.isLoggedIn, async (req, res) => {
         if (req.session.receipt) {
             const { total, weight, paid, date, name, branch_name } = req.session.receipt
+            const inc = await price.findById('62dea2c36e4ae8e0ee23d38f')
             const currentbranch = await branch.findOne({ name: branch_name })
             if (weight <= currentbranch.currentvolume) {
                 currentbranch.currentvolume -= parseInt(weight)
@@ -157,9 +157,28 @@ app.route('/receipt')
                     username: name,
                     branch: branch_name,
                     totalweight: weight,
-                    remainingstock: currentbranch.currentvolume
+                    remainingstock: currentbranch.currentvolume,
+                    inc: inc.currentprice
                 })
+                inc.currentprice++
+                inc.save()
                 newProduct.save()
+                const day = await dayTotal.find({ branch: currentbranch.name, date: newProduct.date })
+                if (!day.length) {
+                    const newDay = new dayTotal({
+                        date: newProduct.date,
+                        branch: newProduct.branch
+                    })
+                    newDay.openingStock = (parseInt(newProduct.remainingstock) + parseInt(newProduct.totalweight))
+                    const previousDate = new Date(newDay.date) - (24 * 60 * 60 * 1000)
+                    const previousDay = await dayTotal.find({ branch: currentbranch.name, date: previousDate })
+                    if (previousDay.length) {
+
+                        previousDay[0].closingStock = newDay.openingStock
+                        previousDay[0].save()
+                    }
+                    newDay.save()
+                }
                 res.render('./pages/receipt', { receipt })
             } else {
                 res.redirect('/')
@@ -181,6 +200,11 @@ app.route('/sales')
         res.render('./pages/products', { products, branche })
     })
 
+app.get('/addall', async (req, res) => {
+    await product.updateMany({ inc: { $gt: 1 } }, { $inc: { remainingstock: 1 } })
+    res.redirect('/')
+})
+
 app.route('/')
     .get(addons.isLoggedIn, async (req, res) => {
 
@@ -192,7 +216,7 @@ app.route('/')
 
     })
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('Server is running on port 3000')
 }   // End of app.listen    (3000)          
 )

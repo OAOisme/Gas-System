@@ -34,29 +34,30 @@
     <div>
 
         <% if(products.length){%>
-            <h2 style="text-align: center;">DATE: <%- products[0].date.toDateString() %>
-            </h2>
-            <%for (product of products){ %>
-                <div>
+            <% let end=0 %>
+                <h2 style="text-align: center;">DATE: <%- products[0].date.toDateString() %>
+                </h2>
+                <%for (product of products){ %>
+                    <div>
 
-                    Amount Paid: &#8358;<%- product.totalprice %><br>
-                        Branch: <%- product.branch %><br>
-                            Attendant Name: <%- product.username %> <br>
-                                Total Weight: <%- product.totalweight %>kg <br>
-                                    <a href="/delete/item/<%-product._id%>" class="btn btn-danger">DELETE</a>
-                                    <br><br>
-                </div>
-                <% } %>
-                    <div class="d-flex justify-content-around fs-4">
-                        <span>Opening Stock: <%- (products[0].remainingstock + products[0].totalweight) %>kg
-                        </span>
-                        <span>
-                            Closing Stock: <%- (products[products.length - 1].remainingstock) %>
-                                kg
-                        </span>
+                        Amount Paid: &#8358;<%- product.totalprice %><br>
+                            Branch: <%- product.branch %><br>
+                                Attendant Name: <%- product.username %> <br>
+                                    Total Weight: <%- product.totalweight %>kg <br>
+                                        <a href="/delete/<%- product._id %>" class="btn btn-danger">Delete</a>
+                                        <br><br>
                     </div>
-                    <%}else{%>
-                        <h1 style="text-align: center;">NO RESULTS</h1>
-                        <% } %>
+                    <% } %>
+                        <div class="d-flex justify-content-around fs-4">
+                            <span>Opening Stock: <%- (products[0].remainingstock + products[0].totalweight) %>kg
+                            </span>
+                            <span>
+                                Closing Stock: <%- products[products.length - 1] %>
+                                    kg
+                            </span>
+                        </div>
+                        <%}else{%>
+                            <h1 style="text-align: center;">NO RESULTS</h1>
+                            <% } %>
 
     </div>
