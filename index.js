@@ -7,6 +7,8 @@ const express = require('express'),
     path = require('path'),
     { product, branch, price } = require('./schema/schemas')
 
+
+require('dotenv').config()
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://oaoisme:jk4dsi6t!@aboundgas.mh8lctb.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('MongoDB Connected'))
@@ -190,7 +192,7 @@ app.route('/')
 
     })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log('Server is running on port 3000')
 }   // End of app.listen    (3000)          
 )
