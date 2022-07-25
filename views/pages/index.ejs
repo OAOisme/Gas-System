@@ -1,0 +1,134 @@
+<% layout('/boilerplate/template') -%>
+
+
+
+    <div class="container">
+
+        <div>
+            <p>
+                <span class="text-muted">
+
+                    Current User: <%= username %> | Current Branch: <%= branch %> | Current Price per kg: &#8358;<span
+                                id="price">
+                                <%= price %>
+                            </span> | 50kg Price: &#8358;<span id="price50">
+                                <%= price50 %>
+                            </span>
+                </span>
+            </p>
+            <a href="/sales" class="btn btn-outline-primary btn-sm mb-2">View All Sales</a>
+            <a href="/logout" class="btn btn-outline-danger btn-sm mb-2">Logout</a>
+
+        </div>
+
+        <div class="input-group mb-3">
+            <label for="add" class="input-group-text">Add Product</label>
+            <select name="product" id="product" class="form-select">
+                <option value="1">1kg Price: &#8358;<%= price %>
+                </option>
+                <option value="2">2kg Price: &#8358;<%= price * 2%>
+                </option>
+                <option value="3">3kg Price: &#8358;<%= price * 3%>
+                </option>
+                <option value="4">4kg Price: &#8358;<%= price * 4%>
+                </option>
+                <option value="5">5kg Price: &#8358;<%= price * 5%>
+                </option>
+                <option value="6">6kg Price: &#8358;<%= price * 6%>
+                </option>
+                <option value="7">7kg Price: &#8358;<%= price * 7%>
+                </option>
+                <option value="8">8kg Price: &#8358;<%= price * 8%>
+                </option>
+                <option value="9">9kg Price: &#8358;<%= price * 9%>
+                </option>
+                <option value="10">10kg Price: &#8358;<%= price * 10%>
+                </option>
+                <option value="11">11kg Price: &#8358;<%= price * 11%>
+                </option>
+                <option value="12">12kg Price: &#8358;<%= price * 12%>
+                </option>
+                <option value="12.5">12.5kg Price: &#8358;<%= price * 12.5%>
+                </option>
+                <option value="15">15kg Price: &#8358;<%= price * 15%>
+                </option>
+                <option value="20">20kg Price: &#8358;<%= price * 20%>
+                </option>
+                <option value="25">25kg Price: &#8358;<%= price * 25%>
+                </option>
+                <option value="50">50kg Price: &#8358;<%= price50 %>
+                </option>
+            </select>
+
+
+            <button class="btn btn-primary" id="addButton">Add</button>
+            <button class="btn btn-danger" id="clearButton">Clear</button>
+        </div>
+
+
+        <div class="input-group mb-5">
+            <span for="paid" class="input-group-text" id="paid_label">Amount Paid: </span>
+            <input type="number" class="form-control" id="paid" name="paid" placeholder="Amount Paid"
+                aria-describedby="paid_label">
+            <button class="btn btn-success" id="sub">Print Receipt</button>
+        </div>
+        <div id="cart" class="mb-2">
+            <h1>Cart</h1>
+        </div>
+    </div>
+
+    <script>
+        let price = parseInt(document.getElementById('price').innerText);
+        let price50 = parseInt(document.getElementById('price50').innerText);
+        let products = new Array;
+        let totalprice = 0;
+        let totalweight = 0;
+        const addToList = () => {
+            products.push(document.getElementById('product').value);
+            renderCart();
+        }
+
+        const clearList = () => {
+            products = new Array;
+            renderCart();
+        }
+
+        const renderCart = () => {
+            let cartDisplay = document.getElementById('cart').innerHTML;
+            cartDisplay = "<h1>Cart</h1>";
+            totalprice = 0;
+            totalweight = 0;
+            for (const product of products) {
+                let specPrice = (product >= 50) ? price50 : price
+                cartDisplay += `<div class="mb-2">
+                <div class="card-body">
+                    <p class="card-text">${product} kg cylinder: Price is &#8358;${(product < 50) ? product * specPrice : specPrice} </p>
+                </div>`;
+                totalprice += parseInt((product < 50) ? product * specPrice : specPrice);
+                totalweight += parseInt(product);
+            }
+            cartDisplay += `<div>
+                Total Price: &#8358;${totalprice}
+                </div>`;
+
+            document.getElementById('cart').innerHTML = cartDisplay;
+
+        }
+
+
+
+        document.getElementById('addButton').addEventListener('click', addToList);
+        document.getElementById('clearButton').addEventListener('click', clearList);
+        document.getElementById('sub').addEventListener('click', () => {
+            if (totalprice > 0 && totalweight > 0) {
+                let paid = parseInt(document.getElementById('paid').value)
+                if (paid >= (parseInt(totalprice))) {
+                    window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid;
+                } else {
+                    document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
+                }
+            } else {
+                document.getElementById('cart').innerText = "This field cannot be empty"
+            }
+        });
+    </script>

@@ -1,0 +1,39 @@
+<% layout('/boilerplate/template') -%>
+
+    <form action="/sales" method="get">
+        <div class="input-group">
+
+            <input type="date" name="date" class="form-control">
+            <button class="btn btn-primary">Submit</button>
+            <a href="/" class="btn btn-danger">Return</a>
+        </div>
+    </form>
+
+    <div>
+
+        <% if(products.length){%>
+            <h2 style="text-align: center;">DATE: <%- products[0].date.toDateString() %>
+            </h2>
+            <%for (product of products){ %>
+                <div>
+
+                    Amount Paid: &#8358;<%- product.totalprice %><br>
+                        Branch: <%- product.branch %><br>
+                            Attendant Name: <%- product.username %> <br>
+                                Total Weight: <%- product.totalweight %>kg <br>
+                                    <br><br>
+                </div>
+                <% } %>
+                    <div class="d-flex justify-content-around fs-4">
+                        <span>Opening Stock: <%- (branche.totalvolume - products[0].totalSales +
+                                products[0].totalweight) %>kg
+                        </span>
+                        <span>
+                            Closing Stock: <%- (branche.totalvolume - products[products.length - 1].totalSales) %>kg
+                        </span>
+                    </div>
+                    <%}else{%>
+                        <h1 style="text-align: center;">NO RESULTS</h1>
+                        <% } %>
+
+    </div>

@@ -1,0 +1,62 @@
+<% layout('/boilerplate/template') -%>
+    <style>
+        @media print {
+
+            .btn {
+                display: none;
+            }
+
+            .form-control {
+                display: none;
+            }
+        }
+    </style>
+
+    <form action="/admin/sales" method="get">
+        <div class="input-group">
+
+            <input type="date" name="date" class="form-control">
+            <button class="btn btn-primary">Submit</button>
+            <a href="/admin" class="btn btn-danger">Return</a>
+        </div>
+        <div class="input-group mb-5 mt-3">
+            <span class="input-group-text" for="branch_name">Select Branch</span>
+            <select class="form-select" aria-label="branch_name" name="branch_name">
+                <% for(branch of branches){ %>
+                    <option value="<%= branch._id %>">
+                        <%= branch.name%>
+                    </option>
+                    <% } %>
+            </select>
+        </div>
+    </form>
+
+    <div>
+
+        <% if(products.length){%>
+            <h2 style="text-align: center;">DATE: <%- products[0].date.toDateString() %>
+            </h2>
+            <%for (product of products){ %>
+                <div>
+
+                    Amount Paid: &#8358;<%- product.totalprice %><br>
+                        Branch: <%- product.branch %><br>
+                            Attendant Name: <%- product.username %> <br>
+                                Total Weight: <%- product.totalweight %>kg <br>
+                                    <a href="/delete/item/<%-product._id%>" class="btn btn-danger">DELETE</a>
+                                    <br><br>
+                </div>
+                <% } %>
+                    <div class="d-flex justify-content-around fs-4">
+                        <span>Opening Stock: <%- (products[0].remainingstock + products[0].totalweight) %>kg
+                        </span>
+                        <span>
+                            Closing Stock: <%- (products[products.length - 1].remainingstock) %>
+                                kg
+                        </span>
+                    </div>
+                    <%}else{%>
+                        <h1 style="text-align: center;">NO RESULTS</h1>
+                        <% } %>
+
+    </div>

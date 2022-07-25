@@ -1,0 +1,33 @@
+<% layout('/boilerplate/template') -%>
+
+
+
+    <div style="text-align: center;">
+        <form action="/login" method="post">
+
+            <h1>Login Page</h1>
+            <div class="input-group mb-5">
+                <span for="username" class="input-group-text" id="user_label">Enter Your Name: </span>
+                <input type="text" class="form-control" id="name" name="username" placeholder="Full Name"
+                    aria-describedby="user_label">
+            </div>
+            <div class="input-group mb-5 mt-3">
+                <span class="input-group-text" for="branch_name">Select Branch</span>
+                <select class="form-select" aria-label="branch_name" name="branch_name">
+                    <% for(branch of branches){ %>
+                        <option value="<%= branch.name %>">
+                            <%= branch.name%>
+                        </option>
+                        <% } %>
+                </select>
+            </div>
+            <div class="input-group mb-5 mt-3">
+                <span for="password" class="input-group-text" id="password_label">Enter Your Password: </span>
+                <input type="password" class="form-control" id="password" name="branch_password" placeholder="Password"
+                    aria-describedby="password_label">
+                <button class="btn btn-primary">Login</button>
+        </form>
+
+        </body>
+
+        </html>

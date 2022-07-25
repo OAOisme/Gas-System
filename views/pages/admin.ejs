@@ -1,0 +1,182 @@
+<% layout('/boilerplate/template') -%>
+
+    <style>
+        .title {
+            text-align: center;
+        }
+    </style>
+
+    <div>
+        <h1 style="text-align: center;">Admin</h1>
+        <div class="d-flex justify-content-around mb-3">
+            <button class="btn btn-outline-primary" id="addStockButton">Add Stock</button>
+            <a class="btn btn-outline-success" id="viewSalesButton" href="/admin/sales">View Sales</a>
+            <button class="btn btn-outline-danger" id="changePasswordButton">Change Password</button>
+            <button class="btn btn-outline-warning" id="changePriceButton">Change Price</button>
+            <button class="btn btn-outline-dark" id="addBranchButton">Add Branch</button>
+        </div>
+
+        <div id="addStock">
+            <h1 class="title">Add Stock</h1>
+            <table>
+
+                <% for(branch of branches){ %>
+                    <tr>
+                        <td>
+
+                            <%= branch.name%>:
+                        </td>
+                        <td>
+
+                            <%- branch.currentvolume %> kg
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+            <form action="/admin/addstock" method="get">
+                <div class="input-group mb-2 mt-3">
+                    <span class="input-group-text" for="id">Select Branch</span>
+                    <select class="form-select" aria-label="id" name="id">
+                        <% for(branch of branches){ %>
+                            <option value="<%= branch._id %>">
+                                <%= branch.name%>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+
+                <div class="input-group mb-2">
+                    <span class="input-group-text" for="quantity">Add Stock</span>
+                    <input type="number" class="form-control" name="quantity">
+                </div>
+                <div class="d-flex justify-content-around">
+
+                    <button class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="changePassword">
+            <h1 class="title">Change Password</h1>
+            <table>
+
+                <% for(branch of branches){ %>
+                    <tr>
+                        <td>
+
+                            <%= branch.name%>:
+                        </td>
+                        <td>
+
+                            <%- branch.password %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+            <form action="/admin/changepassword" method="get">
+
+
+                <div class="input-group mb-2 mt-3">
+                    <span class="input-group-text" for="branch_password">Select Branch</span>
+                    <select class="form-select" aria-label="branch_password" name="branch_password">
+                        <% for(branch of branches){ %>
+                            <option value="<%= branch._id %>">
+                                <%= branch.name%>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text" for="new_password">Password</span>
+                    <input type="password" class="form-control" name="new_password">
+                </div>
+                <div class="d-flex justify-content-around">
+
+                    <button class="btn btn-danger">Change</button>
+                </div>
+            </form>
+        </div>
+        <div id="changePrice">
+            <h1 class="title">Change Price</h1>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            Normal Price:
+                        </td>
+                        <td>
+                            &#8358;<%- prices[0].currentprice %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            50kg Price:
+                        </td>
+                        <td>
+                            &#8358;<%- prices[1].currentprice %>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <form action="/admin/changeprice" method="get">
+
+                <div class="input-group mb-1 mt-3">
+                    <span class="input-group-text">Normal Price</span>
+                    <input type="number" name="price1" class="form-control" required>
+                </div>
+                <div class="input-group mb-2 mt-3">
+                    <span class="input-group-text">50kg Price</span>
+                    <input type="number" name="price50" class="form-control" required>
+                </div>
+                <div class="d-flex justify-content-around">
+
+                    <button class="btn btn-warning">Change</button>
+                </div>
+            </form>
+        </div>
+        <div id="addBranch">
+            <h1 class="title">Add Branch</h1>
+            <form action="/admin/addbranch" method="get">
+                <div class="input-group mb-2">
+                    <span class="input-group-text" for="branch_name">Branch Name</span>
+                    <input type="text" class="form-control" name="branch_name">
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text" for="password">Password</span>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="d-flex justify-content-around">
+
+                    <button class="btn btn-dark">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const hideAll = () => {
+            document.getElementById('addStock').style.display = "none"
+            document.getElementById('changePassword').style.display = "none"
+            document.getElementById('changePrice').style.display = "none"
+            document.getElementById('addBranch').style.display = "none"
+        }
+        hideAll()
+
+        document.getElementById('addStockButton').onclick = () => {
+            hideAll();
+            document.getElementById('addStock').style.display = "block"
+        }
+
+        document.getElementById('changePasswordButton').onclick = () => {
+            hideAll();
+            document.getElementById('changePassword').style.display = "block"
+        }
+        document.getElementById('changePriceButton').onclick = () => {
+            hideAll();
+            document.getElementById('changePrice').style.display = "block"
+        }
+        document.getElementById('addBranchButton').onclick = () => {
+            hideAll();
+            document.getElementById('addBranch').style.display = "block"
+        }
+    </script>
