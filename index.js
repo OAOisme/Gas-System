@@ -59,7 +59,7 @@ app.route('/delete/:id')
     .get(async (req, res) => {
         const { id } = req.params
         const prod = await product.findById(id)
-        await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: prod.weight } })
+        await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: (parseInt(prod.totalweight)) } })
         const thebranch = await branch.findOne({ name: prod.branch })
         thebranch.currentvolume += parseInt(prod.totalweight)
         thebranch.save()
