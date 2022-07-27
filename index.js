@@ -134,7 +134,7 @@ app.route('/finish')
     .get(addons.isLoggedIn, async (req, res) => {
         const { total, weight, paid, payment } = req.query
         let dates = new Date(Date.now()).toDateString()
-        req.session.receipt = { total, weight, paid, date: dates, name: req.session.username, branch_name: req.session.branch, payment }
+        req.session.receipt = { total, weight, paid, date: dates, name: req.session.username, branch_name: req.session.branch_name, payment }
         res.redirect('/receipt')
     })
 
