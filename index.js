@@ -48,9 +48,8 @@ app.route('/login')
             res.redirect('/login')
         }
         else {
-
             req.session.username = username
-            req.session.branch = branch_name
+            req.session.branch_name = branch_name
             res.redirect('/')
         }
     })
@@ -209,11 +208,12 @@ app.get('/addall', async (req, res) => {
 app.route('/')
     .get(addons.isLoggedIn, async (req, res) => {
 
+
         req.session.price = await addons.getCurrerntPrice()
         req.session.price50 = await addons.getCurrerntPrice50()
-        const { username, branch, price, price50 } = req.session
-
-        res.render('./pages/index', { username, branch, price, price50 })
+        const { username, branch_name, price, price50 } = req.session
+        const actual_branch = await branch.findOne({ name: branch_name })
+        res.render('./pages/index', { username, branch_name, price, price50, branchStock: actual_branch.currentvolume })
 
     })
 

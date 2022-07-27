@@ -8,12 +8,12 @@
             <p>
                 <span class="text-muted">
 
-                    Current User: <%= username %> | Current Branch: <%= branch %> | Current Price per kg: &#8358;<span
-                                id="price">
+                    Current User: <%= username %> | Current Branch: <%= branch_name %> | Current Price per kg:
+                            &#8358;<span id="price">
                                 <%= price %>
                             </span> | 50kg Price: &#8358;<span id="price50">
                                 <%= price50 %>
-                            </span>
+                            </span> | Remaining Stock: <%= branchStock %> kg
                 </span>
             </p>
             <a href="/sales" class="btn btn-outline-primary btn-sm mb-2">View All Sales</a>
