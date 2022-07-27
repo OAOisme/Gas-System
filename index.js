@@ -192,9 +192,9 @@ app.route('/sales')
     .get(addons.isLoggedIn, async (req, res) => {
         let products
         if (req.query.date) {
-            products = await product.find({ date: new Date(req.query.date).toDateString(), branch: req.session.branch })
+            products = await product.find({ date: new Date(req.query.date).toDateString(), branch: req.session.branch_name })
         } else {
-            products = await product.find({ date: new Date(Date.now()).toDateString(), branch: req.session.branch })
+            products = await product.find({ date: new Date(Date.now()).toDateString(), branch: req.session.branch_name })
         }
         const branche = await branch.findOne({ name: req.session.branch })
         res.render('./pages/products', { products, branche })
