@@ -64,7 +64,15 @@
             <button class="btn btn-primary" id="addButton">Add</button>
             <button class="btn btn-danger" id="clearButton">Clear</button>
         </div>
+        <div class="input-group mb-3">
 
+            <label for="payment" class="input-group-text">Payment Method</label>
+            <select name="payment" id="payment" class="form-select">
+                <option value="POS">POS</option>
+                <option value="Cash">Cash</option>
+                <option value="Transfer">Transfer</option>
+            </select>
+        </div>
 
         <div class="input-group mb-5">
             <span for="paid" class="input-group-text" id="paid_label">Amount Paid: </span>
@@ -72,9 +80,13 @@
                 aria-describedby="paid_label">
             <button class="btn btn-success" id="sub">Print Receipt</button>
         </div>
-        <div id="cart" class="mb-2">
-            <h1>Cart</h1>
-        </div>
+    </div>
+
+
+
+    <div id="cart" class="mb-2">
+        <h1>Cart</h1>
+    </div>
     </div>
 
     <script>
@@ -122,8 +134,9 @@
         document.getElementById('sub').addEventListener('click', () => {
             if (totalprice > 0 && totalweight > 0) {
                 let paid = parseInt(document.getElementById('paid').value)
+                let payment = document.getElementById('payment').value
                 if (paid >= (parseInt(totalprice))) {
-                    window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid;
+                    window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid + '&payment=' + payment;
                 } else {
                     document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
                 }

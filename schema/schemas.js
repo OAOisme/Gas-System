@@ -14,6 +14,10 @@ const productSchema = new Schema({
     remainingstock: Number,
     inc: {
         type: Number
+    },
+    payment: {
+        type: String,
+        enum: ["POS", "Cash", "Transfer"]
     }
 })
 

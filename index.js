@@ -133,16 +133,16 @@ app.route('/admin/sales')
 
 app.route('/finish')
     .get(addons.isLoggedIn, async (req, res) => {
-        const { total, weight, paid } = req.query
+        const { total, weight, paid, payment } = req.query
         let dates = new Date(Date.now()).toDateString()
-        req.session.receipt = { total, weight, paid, date: dates, name: req.session.username, branch_name: req.session.branch }
+        req.session.receipt = { total, weight, paid, date: dates, name: req.session.username, branch_name: req.session.branch, payment }
         res.redirect('/receipt')
     })
 
 app.route('/receipt')
     .get(addons.isLoggedIn, async (req, res) => {
         if (req.session.receipt) {
-            const { total, weight, paid, date, name, branch_name } = req.session.receipt
+            const { total, weight, paid, date, name, branch_name, payment } = req.session.receipt
             const inc = await price.findById('62dea2c36e4ae8e0ee23d38f')
             const currentbranch = await branch.findOne({ name: branch_name })
             if (weight <= currentbranch.currentvolume) {
@@ -158,7 +158,8 @@ app.route('/receipt')
                     branch: branch_name,
                     totalweight: weight,
                     remainingstock: currentbranch.currentvolume,
-                    inc: inc.currentprice
+                    inc: inc.currentprice,
+                    payment: payment
                 })
                 inc.currentprice++
                 inc.save()
