@@ -99,9 +99,9 @@
                 let specPrice = (product == 50) ? price50 : price
                 cartDisplay += `<div class="mb-2">
                 <div class="card-body">
-                    <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product == 50) ? specPrice : product * specPrice}</span> </p>
+                    <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product == 50) ? specPrice : (product * specPrice).toFixed(2)}</span> </p>
                 </div>`;
-                totalprice += parseFloat((product == 50) ? specPrice : product * specPrice);
+                totalprice += parseFloat((product == 50) ? specPrice : (product * specPrice).toFixed(3));
                 totalweight += parseFloat(product);
             }
             cartDisplay += `<div>
