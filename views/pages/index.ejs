@@ -114,7 +114,7 @@
                 let specPrice = (product >= 50) ? price50 : price
                 cartDisplay += `<div class="mb-2">
                 <div class="card-body">
-                    <p class="card-text">${product} kg cylinder: Price is &#8358;${(product < 50) ? product * specPrice : specPrice} </p>
+                    <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product < 50) ? product * specPrice : specPrice}</span> </p>
                 </div>`;
                 totalprice += parseInt((product < 50) ? product * specPrice : specPrice);
                 totalweight += parseInt(product);
@@ -132,16 +132,44 @@
         document.getElementById('addButton').addEventListener('click', addToList);
         document.getElementById('clearButton').addEventListener('click', clearList);
         document.getElementById('sub').addEventListener('click', () => {
-            if (totalprice > 0 && totalweight > 0) {
-                let paid = parseInt(document.getElementById('paid').value)
-                let payment = document.getElementById('payment').value
-                if (paid >= (parseInt(totalprice))) {
-                    window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid + '&payment=' + payment;
-                } else {
-                    document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
+            let payment = document.getElementById('payment').value
+            let paid = parseInt(document.getElementById('paid').value)
+            // if (totalprice > 0 && totalweight > 0) {
+            //     
+            //     let payment = document.getElementById('payment').value
+            //     if (paid >= (parseInt(totalprice))) {
+            //         window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid + '&payment=' + payment;
+            //     } else {
+            //         document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
+            //     }
+            // } else {
+            //     document.getElementById('cart').innerText = "This field cannot be empty"
+            // }
+            const items = document.querySelectorAll('.ite')
+            const prices = document.querySelectorAll('.pric')
+            if (items.length && paid >= totalprice) {
+                let space = '<form method="POST" action="/purchase" style="display: none">'
+                for (let i = 0; i < items.length; i++) {
+                    let cop = {
+                        item: parseInt(items[i].innerText),
+                        price: parseInt(prices[i].innerText)
+                    }
+                    space += `<input type="Number" name="product[${i}].item" value=${cop.item}>
+                <input type="Number" name="product[${i}].price" value=${cop.price}>`
                 }
+                space += `<input type="Number" name="total" value=${totalprice}>`
+                space += `<input type="Number" name="weight" value=${totalweight}>`
+                space += `<input type="String" name="payment" value=${payment}>`
+                space += `<input type="Number" name="paid" value=${paid}>`
+
+                space += "</form>"
+                document.body.innerHTML += space
+                document.querySelector('form').submit()
+            }
+            else if (!items.length) {
+                document.getElementById('cart').innerHTML += "<br>This field cannot be empty"
             } else {
-                document.getElementById('cart').innerText = "This field cannot be empty"
+                document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
             }
         });
     </script>

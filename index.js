@@ -29,7 +29,6 @@ app.use(session({
 }))
 
 
-
 app.get('/logout', (req, res) => {
     req.session = null
     res.redirect('/login')
@@ -54,8 +53,21 @@ app.route('/login')
         }
     })
 
+app.route('/admin/login')
+    .get((req, res) => {
+        res.render('./pages/adminlogin')
+    })
+    .post((req, res) => {
+        if (req.body.password = "Mabel1975!") {
+            req.session.admin = true
+            res.redirect('/admin')
+        } else {
+            res.redirect('/admin/login')
+        }
+    })
+
 app.route('/delete/:id')
-    .get(async (req, res) => {
+    .get(addons.adminState, async (req, res) => {
         const { id } = req.params
         const prod = await product.findById(id)
         await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: (parseInt(prod.totalweight)) } })
@@ -68,14 +80,14 @@ app.route('/delete/:id')
     })
 
 app.route('/admin')
-    .get(async (req, res) => {
+    .get(addons.adminState, async (req, res) => {
         const branches = await branch.find({})
         const prices = await price.find({})
         res.render('./pages/admin', { branches, prices })
     })
 
 app.route('/admin/changepassword')
-    .get(async (req, res) => {
+    .get(addons.adminState, async (req, res) => {
         const { new_password, branch_password } = req.query
         const thebranch = await branch.findById(branch_password)
         thebranch.password = new_password;
@@ -83,7 +95,7 @@ app.route('/admin/changepassword')
         res.redirect('/admin')
     })
 
-app.get('/admin/addbranch', async (req, res) => {
+app.get('/admin/addbranch', addons.adminState, async (req, res) => {
     const { branch_name, password } = req.query
     const thebranch = new branch({
         name: branch_name,
@@ -95,7 +107,7 @@ app.get('/admin/addbranch', async (req, res) => {
     res.redirect('/admin')
 })
 
-app.get('/admin/changeprice', async (req, res) => {
+app.get('/admin/changeprice', addons.adminState, async (req, res) => {
     const { price1, price50 } = req.query
     const prices = await price.find({})
     prices[0].currentprice = parseInt(price1)
@@ -105,7 +117,7 @@ app.get('/admin/changeprice', async (req, res) => {
     res.redirect('/admin')
 })
 
-app.get('/admin/addstock',
+app.get('/admin/addstock', addons.adminState,
     async (req, res) => {
         const { id, quantity } = req.query
         const branche = await branch.findById(id)
@@ -116,7 +128,7 @@ app.get('/admin/addstock',
     })
 
 app.route('/admin/sales')
-    .get(async (req, res) => {
+    .get(addons.adminState, async (req, res) => {
         let products
         let branch_name
         if (req.query.date && req.query.branch_name) {
@@ -130,9 +142,27 @@ app.route('/admin/sales')
         res.render('./pages/adminproducts', { products, branches, branch_name })
     })
 
+app.post('/purchase', addons.isLoggedIn, async (req, res) => {
+    let products = []
+    const arr = req.body.product
+    for (let i = 0; i < arr.length; i += 2) {
+        let cop = {
+            quantity: parseInt(arr[i]),
+            price: parseInt(arr[i + 1])
+        }
+        products.push(cop)
+    }
+    console.log(products)
+    console.log(req.body)
+    req.session.query = req.body
+    req.session.items = products
+    res.redirect('/finish');
+})
+
+
 app.route('/finish')
     .get(addons.isLoggedIn, async (req, res) => {
-        const { total, weight, paid, payment } = req.query
+        const { total, weight, paid, payment } = req.session.query
         let dates = new Date(Date.now()).toDateString()
         req.session.receipt = { total, weight, paid, date: dates, name: req.session.username, branch_name: req.session.branch_name, payment }
         res.redirect('/receipt')
@@ -158,7 +188,8 @@ app.route('/receipt')
                     totalweight: weight,
                     remainingstock: currentbranch.currentvolume,
                     inc: inc.currentprice,
-                    payment: payment
+                    payment: payment,
+                    items: req.session.items
                 })
                 inc.currentprice++
                 inc.save()

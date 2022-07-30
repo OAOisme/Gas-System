@@ -44,6 +44,6 @@ const adminState = async (req, res, next) => {
         res.redirect('/admin/login')
     }
 }
-module.exports = { changePrice, createPrice, getCurrerntPrice, isLoggedIn, getCurrerntPrice50 };
+module.exports = { changePrice, createPrice, getCurrerntPrice, isLoggedIn, getCurrerntPrice50, adminState };
 
 

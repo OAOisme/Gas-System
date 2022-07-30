@@ -18,7 +18,14 @@ const productSchema = new Schema({
     payment: {
         type: String,
         enum: ["POS", "Cash", "Transfer"]
-    }
+    },
+    items: [
+        {
+            quantity: Number,
+            price: Number,
+            _id: false
+        }
+    ]
 })
 
 const priceSchema = new Schema({
