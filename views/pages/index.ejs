@@ -21,54 +21,20 @@
 
         </div>
 
-        <div class="input-group mb-3">
-            <label for="add" class="input-group-text">Add Product</label>
-            <select name="product" id="product" class="form-select">
-                <option value="1">1kg Price: &#8358;<%= price %>
-                </option>
-                <option value="2">2kg Price: &#8358;<%= price * 2%>
-                </option>
-                <option value="3">3kg Price: &#8358;<%= price * 3%>
-                </option>
-                <option value="4">4kg Price: &#8358;<%= price * 4%>
-                </option>
-                <option value="5">5kg Price: &#8358;<%= price * 5%>
-                </option>
-                <option value="6">6kg Price: &#8358;<%= price * 6%>
-                </option>
-                <option value="7">7kg Price: &#8358;<%= price * 7%>
-                </option>
-                <option value="8">8kg Price: &#8358;<%= price * 8%>
-                </option>
-                <option value="9">9kg Price: &#8358;<%= price * 9%>
-                </option>
-                <option value="10">10kg Price: &#8358;<%= price * 10%>
-                </option>
-                <option value="11">11kg Price: &#8358;<%= price * 11%>
-                </option>
-                <option value="12">12kg Price: &#8358;<%= price * 12%>
-                </option>
-                <option value="12.5">12.5kg Price: &#8358;<%= price * 12.5%>
-                </option>
-                <option value="15">15kg Price: &#8358;<%= price * 15%>
-                </option>
-                <option value="20">20kg Price: &#8358;<%= price * 20%>
-                </option>
-                <option value="25">25kg Price: &#8358;<%= price * 25%>
-                </option>
-                <option value="50">50kg Price: &#8358;<%= price50 %>
-                </option>
-            </select>
 
-
-            <button class="btn btn-primary" id="addButton">Add</button>
-            <button class="btn btn-danger" id="clearButton">Clear</button>
-        </div>
         <div class="input-group mb-3">
-            <label for="add" class="input-group-text">Add Product</label>
+            <label for="add" class="input-group-text">Add By Weight</label>
             <input type="number" class="form-control" id="custom_kg" name="custom_kg" placeholder="Custom kg"
                 aria-describedby="paid_label">
             <button class="btn btn-primary" id="customAdd">Add</button>
+            <button class="btn btn-danger" id="clearButton">Clear</button>
+        </div>
+        <div class="input-group mb-3">
+            <label for="add" class="input-group-text">Add By Price</label>
+            <input type="number" class="form-control" id="custom_price" name="custom_price" placeholder="Custom Price"
+                aria-describedby="paid_label">
+            <button class="btn btn-primary" id="customPrice">Add</button>
+            <button class="btn btn-danger" id="clearButton">Clear</button>
         </div>
         <div class="input-group mb-3">
 
@@ -96,8 +62,8 @@
     </div>
 
     <script>
-        let price = parseInt(document.getElementById('price').innerText);
-        let price50 = parseInt(document.getElementById('price50').innerText);
+        let price = parseFloat(document.getElementById('price').innerText);
+        let price50 = parseFloat(document.getElementById('price50').innerText);
         let products = new Array;
         let totalprice = 0;
         let totalweight = 0;
@@ -108,6 +74,15 @@
         const addCustom = () => {
             products.push(document.getElementById('custom_kg').value);
             renderCart();
+        }
+        const addByPrice = () => {
+            let weight = parseFloat(document.getElementById('custom_price').value);
+            weight = (weight / price)
+            weight = weight.toFixed(3)
+            weight = parseFloat(weight)
+            products.push(weight)
+            renderCart()
+
         }
 
         const clearList = () => {
@@ -126,8 +101,8 @@
                 <div class="card-body">
                     <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product < 50) ? product * specPrice : specPrice}</span> </p>
                 </div>`;
-                totalprice += parseInt((product < 50) ? product * specPrice : specPrice);
-                totalweight += parseInt(product);
+                totalprice += parseFloat((product < 50) ? product * specPrice : specPrice);
+                totalweight += parseFloat(product);
             }
             cartDisplay += `<div>
                 Total Price: &#8358;${totalprice}
@@ -139,16 +114,17 @@
 
 
 
-        document.getElementById('addButton').addEventListener('click', addToList);
+        //document.getElementById('addButton').addEventListener('click', addToList);
         document.getElementById('clearButton').addEventListener('click', clearList);
         document.getElementById('customAdd').addEventListener('click', addCustom)
+        document.getElementById('customPrice').addEventListener('click', addByPrice)
         document.getElementById('sub').addEventListener('click', () => {
             let payment = document.getElementById('payment').value
-            let paid = parseInt(document.getElementById('paid').value)
+            let paid = parseFloat(document.getElementById('paid').value)
             // if (totalprice > 0 && totalweight > 0) {
             //     
             //     let payment = document.getElementById('payment').value
-            //     if (paid >= (parseInt(totalprice))) {
+            //     if (paid >= (parseFloat(totalprice))) {
             //         window.location.href = '/finish?total=' + totalprice + '&weight=' + totalweight + '&paid=' + paid + '&payment=' + payment;
             //     } else {
             //         document.getElementById('cart').innerHTML += "<br>Insufficient amount paid"
@@ -162,8 +138,8 @@
                 let space = '<form method="POST" action="/purchase" style="display: none">'
                 for (let i = 0; i < items.length; i++) {
                     let cop = {
-                        item: parseInt(items[i].innerText),
-                        price: parseInt(prices[i].innerText)
+                        item: parseFloat(items[i].innerText),
+                        price: parseFloat(prices[i].innerText)
                     }
                     space += `<input type="Number" name="product[${i}].item" value=${cop.item}>
                 <input type="Number" name="product[${i}].price" value=${cop.price}>`

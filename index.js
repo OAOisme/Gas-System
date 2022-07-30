@@ -70,9 +70,9 @@ app.route('/delete/:id')
     .get(addons.adminState, async (req, res) => {
         const { id } = req.params
         const prod = await product.findById(id)
-        await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: (parseInt(prod.totalweight)) } })
+        await product.updateMany({ inc: { $gt: prod.inc }, branch: prod.branch }, { $inc: { remainingstock: (parseFloat(prod.totalweight)) } })
         const thebranch = await branch.findOne({ name: prod.branch })
-        thebranch.currentvolume += parseInt(prod.totalweight)
+        thebranch.currentvolume += parseFloat(prod.totalweight)
         thebranch.save()
         await product.findByIdAndDelete(id)
         res.redirect('/admin')
@@ -110,8 +110,8 @@ app.get('/admin/addbranch', addons.adminState, async (req, res) => {
 app.get('/admin/changeprice', addons.adminState, async (req, res) => {
     const { price1, price50 } = req.query
     const prices = await price.find({})
-    prices[0].currentprice = parseInt(price1)
-    prices[1].currentprice = parseInt(price50)
+    prices[0].currentprice = parseFloat(price1)
+    prices[1].currentprice = parseFloat(price50)
     await prices[0].save()
     await prices[1].save()
     res.redirect('/admin')
@@ -121,8 +121,8 @@ app.get('/admin/addstock', addons.adminState,
     async (req, res) => {
         const { id, quantity } = req.query
         const branche = await branch.findById(id)
-        branche.currentvolume += parseInt(quantity)
-        branche.totalvolume += parseInt(quantity)
+        branche.currentvolume += parseFloat(quantity)
+        branche.totalvolume += parseFloat(quantity)
         await branche.save()
         res.redirect('/admin')
     })
@@ -147,8 +147,8 @@ app.post('/purchase', addons.isLoggedIn, async (req, res) => {
     const arr = req.body.product
     for (let i = 0; i < arr.length; i += 2) {
         let cop = {
-            quantity: parseInt(arr[i]),
-            price: parseInt(arr[i + 1])
+            quantity: parseFloat(arr[i]),
+            price: parseFloat(arr[i + 1])
         }
         products.push(cop)
     }
@@ -175,7 +175,7 @@ app.route('/receipt')
             const inc = await price.findById('62dea2c36e4ae8e0ee23d38f')
             const currentbranch = await branch.findOne({ name: branch_name })
             if (weight <= currentbranch.currentvolume) {
-                currentbranch.currentvolume -= parseInt(weight)
+                currentbranch.currentvolume -= parseFloat(weight)
                 await currentbranch.save()
                 const receipt = req.session.receipt
                 req.session.receipt = null
@@ -200,7 +200,7 @@ app.route('/receipt')
                         date: newProduct.date,
                         branch: newProduct.branch
                     })
-                    newDay.openingStock = (parseInt(newProduct.remainingstock) + parseInt(newProduct.totalweight))
+                    newDay.openingStock = (parseFloat(newProduct.remainingstock) + parseFloat(newProduct.totalweight))
                     const previousDate = new Date(newDay.date) - (24 * 60 * 60 * 1000)
                     const previousDay = await dayTotal.find({ branch: currentbranch.name, date: previousDate })
                     if (previousDay.length) {
