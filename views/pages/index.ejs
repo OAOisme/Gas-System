@@ -65,6 +65,12 @@
             <button class="btn btn-danger" id="clearButton">Clear</button>
         </div>
         <div class="input-group mb-3">
+            <label for="add" class="input-group-text">Add Product</label>
+            <input type="number" class="form-control" id="custom_kg" name="custom_kg" placeholder="Custom kg"
+                aria-describedby="paid_label">
+            <button class="btn btn-primary" id="customAdd">Add</button>
+        </div>
+        <div class="input-group mb-3">
 
             <label for="payment" class="input-group-text">Payment Method</label>
             <select name="payment" id="payment" class="form-select">
@@ -99,6 +105,10 @@
             products.push(document.getElementById('product').value);
             renderCart();
         }
+        const addCustom = () => {
+            products.push(document.getElementById('custom_kg').value);
+            renderCart();
+        }
 
         const clearList = () => {
             products = new Array;
@@ -131,6 +141,7 @@
 
         document.getElementById('addButton').addEventListener('click', addToList);
         document.getElementById('clearButton').addEventListener('click', clearList);
+        document.getElementById('customAdd').addEventListener('click', addCustom)
         document.getElementById('sub').addEventListener('click', () => {
             let payment = document.getElementById('payment').value
             let paid = parseInt(document.getElementById('paid').value)
