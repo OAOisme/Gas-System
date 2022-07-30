@@ -96,12 +96,12 @@
             totalprice = 0;
             totalweight = 0;
             for (const product of products) {
-                let specPrice = (product >= 50) ? price50 : price
+                let specPrice = (product == 50) ? price50 : price
                 cartDisplay += `<div class="mb-2">
                 <div class="card-body">
-                    <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product < 50) ? product * specPrice : specPrice}</span> </p>
+                    <p class="card-text"><span class="ite">${product}</span> kg cylinder: Price is &#8358;<span class="pric">${(product == 50) ? specPrice : product * specPrice}</span> </p>
                 </div>`;
-                totalprice += parseFloat((product < 50) ? product * specPrice : specPrice);
+                totalprice += parseFloat((product == 50) ? specPrice : product * specPrice);
                 totalweight += parseFloat(product);
             }
             cartDisplay += `<div>
