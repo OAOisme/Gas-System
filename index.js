@@ -176,7 +176,8 @@ app.route('/receipt')
             const inc = await price.findById('62dea2c36e4ae8e0ee23d38f')
             const currentbranch = await branch.findOne({ name: branch_name })
             if (weight <= currentbranch.currentvolume) {
-                currentbranch.currentvolume -= parseFloat(weight)
+                currentbranch.currentvolume -= parseFloat(weight);
+                currentbranch.SN += 1;
                 await currentbranch.save()
                 const receipt = req.session.receipt
                 req.session.receipt = null
@@ -190,6 +191,7 @@ app.route('/receipt')
                     remainingstock: currentbranch.currentvolume,
                     inc: inc.currentprice,
                     payment: payment,
+                    SN: currentbranch.SN,
                     items: req.session.items
                 })
                 inc.currentprice++
@@ -211,7 +213,7 @@ app.route('/receipt')
                     }
                     newDay.save()
                 }
-                res.render('./pages/receipt', { receipt })
+                res.render('./pages/receipt', { receipt, SN: currentbranch.SN })
             } else {
                 res.redirect('/')
             }

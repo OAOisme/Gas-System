@@ -8,6 +8,7 @@ const productSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    SN: Number,
     username: String,
     branch: String,
     totalweight: Number,
@@ -43,7 +44,12 @@ const branchSchema = new Schema({
     name: String,
     currentvolume: Number,
     password: String,
-    totalvolume: Number
+    totalvolume: Number,
+    SN:
+    {
+        type: Number,
+        default: 1
+    }
 
 })
 
