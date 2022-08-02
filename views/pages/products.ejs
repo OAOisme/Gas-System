@@ -1,5 +1,13 @@
 <% layout('/boilerplate/template') -%>
 
+    <style>
+        @media print {
+            .yes {
+                display: none;
+            }
+        }
+    </style>
+
     <form action="/sales" method="get">
         <div class="input-group">
 
@@ -22,11 +30,14 @@
 
 
                                 Amount Paid: &#8358;<%- product.totalprice %><br>
-                                    Payment Method: <%- product.payment %><br>
-                                        Branch: <%- product.branch %><br>
-                                            Attendant Name: <%- product.username %> <br>
-                                                Total Weight: <%- product.totalweight %>kg <br>
-                                                    <br><br>
+                                    <span class="yes">
+
+                                        Payment Method: <%- product.payment %><br>
+                                            Branch: <%- product.branch %><br>
+                                                Attendant Name: <%- product.username %> <br>
+                                    </span>
+                                    Total Weight: <%- product.totalweight %>kg <br>
+                                        <br><br>
                     </div>
                     <% } %>
                         <div class="fs-4">
