@@ -28,7 +28,7 @@
 </head>
 
 <body>
-    <div class="container" style="max-height: 10cm;">
+    <div style="max-height: 10cm;">
         <div style="text-align: center;">
             <img src="logo.jpg" alt="Logo" width="33px" height="31px">
             <h3 style="font-size: 20px;">Receipt</h3>
@@ -40,8 +40,8 @@
 
                     <strong>Date:</strong>
 
-
-                    <%= receipt.date %>
+                    <% const dap=new Date(receipt.date) %>
+                        <%= dap.toISOString().slice(0,10) %>
                 </div>
 
                 <div class="d-flex justify-content-between">
@@ -67,14 +67,7 @@
 
                     &#8358;<%= receipt.total %>
                 </div>
-                <div class="d-flex justify-content-between">
 
-
-                    <strong>Amount Paid:</strong>
-
-
-                    &#8358;<%= receipt.paid %>
-                </div>
                 <div class="d-flex justify-content-between">
 
 
