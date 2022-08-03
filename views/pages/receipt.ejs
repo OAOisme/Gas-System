@@ -27,119 +27,71 @@
 
 </head>
 
-<body style="font-family:'Times New Roman', Times, serif; font-size: 8px;">
+<body style="font-family:'Times New Roman', Times, serif; font-size: 8px; max-width: 5cm;">
     <div class="container" style="max-width: 400px;">
         <div style="text-align: center;">
-            <img src="logo.jpg" alt="Logo" width="62px" height="60px">
-            <h3>Receipt</h3>
-            <h5>Abound Gas and Oil</h5>
+            <img src="logo.jpg" alt="Logo" width="32px" height="30px">
+            <h3 style="font-size: 10px;">Receipt</h3>
         </div>
-        <div class="row">
-            <div class="d-flex justify-content-around">
-                <table class="mb-3" style="font-size: 9px; font-weight: bolder;">
-                    <tr>
-                        <td>
+        <div>
+            <div style="font-size: 7px; font-weight: bolder;">
 
-                            <strong>Date:</strong>
-                        </td>
-                        <td>
+                <div class="d-flex justify-content-between">
 
-                            <%= receipt.date %>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-
-                            <strong>Serial Number:</strong>
-                        </td>
-                        <td>
-
-                            <%= SN %>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td>
-
-                            <strong>Branch:</strong>
-                        </td>
-                        <td>
-
-                            <%= receipt.branch_name %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-
-                            <strong>Total Price:</strong>
-                        </td>
-                        <td>
-
-                            &#8358;<%= receipt.total %>
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td>
-
-                            <strong>Amount Paid:</strong>
-                        </td>
-                        <td>
-
-                            &#8358;<%= receipt.paid %>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td>
-
-                            <strong>Payment Method:</strong>
-                        </td>
-                        <td>
-
-                            <%= receipt.payment %>
-                        </td>
-
-                    </tr>
+                    <strong>Date:</strong>
 
 
-                    <tr>
-                        <td>
+                    <%= receipt.date %>
+                </div>
 
-                            <strong>Change Due:</strong>
-                        </td>
-                        <td>
+                <div class="d-flex justify-content-between">
 
-                            &#8358;<%= receipt.paid - receipt.total %>
-                        </td>
+                    <strong>SN:</strong>
 
-                    </tr>
-                    <tr>
-                        <td>
 
-                            <strong>Total Weight:</strong>
-                        </td>
-                        <td>
+                    <%= SN %>
+                </div>
+                <div class="d-flex justify-content-between">
 
-                            <%= receipt.weight %>kg
-                        </td>
 
-                    </tr>
-                    <tr>
-                        <td>
+                    <strong>Branch:</strong>
 
-                            <strong>Attendant Name:</strong>
-                        </td>
-                        <td>
 
-                            <%= receipt.name %>
-                        </td>
-                    </tr>
+                    <%= receipt.branch_name %>
+                </div>
 
-                </table>
+                <div class="d-flex justify-content-between">
+
+                    <strong>Total Price:</strong>
+
+
+                    &#8358;<%= receipt.total %>
+                </div>
+                <div class="d-flex justify-content-between">
+
+
+                    <strong>Amount Paid:</strong>
+
+
+                    &#8358;<%= receipt.paid %>
+                </div>
+                <div class="d-flex justify-content-between">
+
+
+                    <strong>Change Due:</strong>
+
+
+                    &#8358;<%= receipt.paid - receipt.total %>
+                </div>
+                <div class="d-flex justify-content-between">
+
+
+                    <strong>Total Weight:</strong>
+
+
+                    <%= receipt.weight %>kg
+                </div>
+
 
             </div>
             <p style="text-align: center;"><span>Customer care: 08132044403 <br> Powered by AFX</span></p>
