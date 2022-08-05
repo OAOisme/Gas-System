@@ -11,6 +11,7 @@ const express = require('express'),
 require('dotenv').config()
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://oaoisme:jk4dsi6t!@aboundgas.mh8lctb.mongodb.net/?retryWrites=true&w=majority')
+    //mongoose.connect('mongodb+srv://oaoisme:jk4dsi6t!@test.c1if2y2.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err))
 
