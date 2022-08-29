@@ -25,20 +25,22 @@
             <% let end=0, totalSales=0,totalKg=0 %>
                 <%for (product of products){ %>
                     <div>
-                        <% totalSales +=product.totalprice%>
-                            <% totalKg +=product.totalweight%>
+                        <% if(product.totalweight> 0){ %>
+                            <% totalSales +=product.totalprice%>
+                                <% totalKg +=product.totalweight%>
+                                    <% } %>
 
 
-                                Amount Paid: &#8358;<%- product.totalprice %><br>
-                                    Serial Number: <%- product.SN %> <br>
-                                        <span class="yes">
+                                        Amount Paid: &#8358;<%- product.totalprice %><br>
+                                            Serial Number: <%- product.SN %> <br>
+                                                <span class="yes">
 
-                                            Payment Method: <%- product.payment %><br>
-                                                Branch: <%- product.branch %><br>
-                                                    Attendant Name: <%- product.username %> <br>
-                                        </span>
-                                        Total Weight: <%- product.totalweight %>kg <br>
-                                            <br><br>
+                                                    Payment Method: <%- product.payment %><br>
+                                                        Branch: <%- product.branch %><br>
+                                                            Attendant Name: <%- product.username %> <br>
+                                                </span>
+                                                Total Weight: <%- product.totalweight %>kg <br>
+                                                    <br><br>
                     </div>
                     <% } %>
                         <div class="fs-4">

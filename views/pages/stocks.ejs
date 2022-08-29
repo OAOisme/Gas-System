@@ -1,0 +1,52 @@
+<% layout('/boilerplate/template') -%>
+
+    <div style="text-align:center;">
+        <h1>Stocks</h1>
+        <form action="/admin/stock" method="post">
+
+            <div class="input-group mb-3 mt-3">
+                <span class="input-group-text" for="branch_name">Select Branch</span>
+                <select class="form-select" aria-label="branch_name" name="branch_name">
+                    <% for(branch of branches){ %>
+                        <option value="<%= branch._id %>">
+                            <%= branch.name%>
+                        </option>
+                        <% } %>
+                </select>
+
+                <button class="btn btn-primary">Submit</button>
+                <a class="btn btn-danger" href="/admin">Return</a>
+            </div>
+        </form>
+        <div class="input-group mb-5">
+            <label for="" class="input-group-text">Select Date</label>
+            <input type="date" id="date_data" class="form-control">
+            <button class="btn btn-success" id="finder">Find</button>
+        </div>
+        <% if(stocks.length){%>
+            <h3>USER | QUANTITY | DATE | BRANCH</h3>
+            <% for (stock of stocks) {%>
+                <div>
+
+                    <p id="<%=stock.date.toISOString().slice(0,10)%>">
+                        <%=stock.name%> | <%=stock.quantity%> kg | <%=stock.date.toISOString().slice(0,10)%> |
+                                    <%=stock.branch%>
+                    </p>
+                </div>
+                <% } %>
+                    <%}%>
+
+
+
+
+    </div>
+
+    <script>
+        document.getElementById('finder').onclick = () => {
+            const dat = document.getElementById("date_data").value;
+            if (document.getElementById(dat)) {
+                document.getElementById(dat).scrollIntoView()
+            }
+        }
+
+    </script>

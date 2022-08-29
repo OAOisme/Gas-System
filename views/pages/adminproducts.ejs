@@ -41,36 +41,39 @@
                 </h2>
                 <%for (product of products){ %>
                     <div>
-                        <% totalSales +=product.totalprice%>
-                            <% totalKg +=product.totalweight%>
+                        <% if(product.totalweight> 0){ %>
+                            <% totalSales +=product.totalprice%>
+                                <% totalKg +=product.totalweight%>
+                                    <% } %>
+                                        Amount Paid: &#8358;<%- product.totalprice %><br>
+                                            Serial Number: <%- product.SN %> <br>
+                                                <span class="yes">
 
-                                Amount Paid: &#8358;<%- product.totalprice %><br>
-                                    Serial Number: <%- product.SN %> <br>
-                                        <span class="yes">
-
-                                            Branch: <%- product.branch %><br>
-                                                Payment Method: <%- product.payment %><br>
-                                                    Attendant Name: <%- product.username %> <br>
-                                        </span>
-                                        Total Weight: <%- product.totalweight %>kg <br>
-                                            <table>
-                                                <tr>
-                                                    <th>Qunatity</th>
-                                                    <th>Price</th>
-                                                </tr>
-                                                <% for(ite of product.items){ %>
-                                                    <tr>
-                                                        <td>
-                                                            <%- ite.quantity%>kg
-                                                        </td>
-                                                        <td>
-                                                            &#8358;<%- ite.price%>
-                                                        </td>
-                                                    </tr>
-                                                    <% } %>
-                                            </table>
-                                            <a href="/delete/<%- product._id %>" class="btn btn-danger">Delete</a>
-                                            <br><br>
+                                                    Branch: <%- product.branch %><br>
+                                                        Payment Method: <%- product.payment %><br>
+                                                            Attendant Name: <%- product.username %> <br>
+                                                </span>
+                                                Total Weight: <%- product.totalweight> 0 ? product.totalweight :
+                                                    -product.totalweight %>kg <br>
+                                                    <table>
+                                                        <tr>
+                                                            <th>Qunatity</th>
+                                                            <th>Price</th>
+                                                        </tr>
+                                                        <% for(ite of product.items){ %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%- ite.quantity%>kg
+                                                                </td>
+                                                                <td>
+                                                                    &#8358;<%- ite.price%>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                                    </table>
+                                                    <a href="/delete/<%- product._id %>"
+                                                        class="btn btn-danger">Delete</a>
+                                                    <br><br>
 
                     </div>
                     <% } %>

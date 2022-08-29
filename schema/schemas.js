@@ -53,9 +53,20 @@ const branchSchema = new Schema({
 
 })
 
+const stockSchema = new Schema({
+    name: String,
+    quantity: Number,
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+    branch: String
+})
+
 
 
 module.exports.dayTotal = mongoose.model('dayTotal', dayTotalSchema)
 module.exports.product = mongoose.model('product', productSchema)
 module.exports.price = mongoose.model('price', priceSchema)
 module.exports.branch = mongoose.model('branch', branchSchema)
+module.exports.stock = mongoose.model('stock', stockSchema)
