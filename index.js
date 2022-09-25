@@ -9,10 +9,13 @@ const express = require('express'),
     outsidedata = require('./routes/outsidedata');
 
 
+    /*
+    RUN INSERT.JS BEFORE RUNNING THE SERVER
+    */
+
+
 require('dotenv').config()
-// Connect to MongoDB
-// ABOUND GAS
-mongoose.connect('mongodb+srv://oaoisme:jk4dsi6t!@aboundgas.mh8lctb.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect("MONGO URI")
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err))
 

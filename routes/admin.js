@@ -7,7 +7,7 @@ router.route('/login')
         res.render('./pages/adminlogin')
     })
     .post((req, res) => {
-        if (req.body.branch_password == "Mabel1975!") {
+        if (req.body.branch_password == "<ADMIN_PASSWORD>") {
             req.session.admin = true
             res.redirect('/admin')
         } else {
